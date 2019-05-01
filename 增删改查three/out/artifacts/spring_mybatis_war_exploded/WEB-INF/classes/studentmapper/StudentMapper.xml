@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nenu.yf.mapper.StudentMapper">
+    <!--为返回list设置了resultMap-->
+    <resultMap type="com.nenu.yf.entity.Student" id="StudentResult">
+        <id column="id"   property="id"/>
+        <result column="username"   property="username"/>
+        <result column="password"   property="password"/>
+       </resultMap>
+    <!--用户注册-->
+   <insert id="insertStudent" parameterType="student">
+        INSERT INTO student(username,password) VALUES (#{username},#{password})
+   </insert>
+    <!--<insert id="register" parameterType="student">-->
+        <!--INSERT INTO student(username,password,isVip) VALUES (#{username},#{password},#{isVip})-->
+   <!--</insert>-->
+
+    <!--根据id查询-->
+    <select id="selectStudent" parameterType="int" resultType ="com.nenu.yf.entity.Student">
+         SELECT id,username,password FROM student WHERE id=#{id}
+    </select>
+
+    <!--根据id删除-->
+    <delete id="deleteStudent" parameterType="int">
+        delete from student where id=#{id}
+    </delete>
+
+    <!--查询所有用户-->
+    <select id="listAllStudent"  resultMap="StudentResult">/*此处id作为唯一标识，与mapper接口中的方法名对应*/
+        SELECT * FROM student
+    </select>
+
+    <!--更改用户-->
+    <update id="updateStudent" parameterType="com.nenu.yf.entity.Student">
+        update student set username=#{username},password=#{password} where id=#{id}
+    </update>
+    <select id="findById" parameterType="int" resultType ="com.nenu.yf.entity.Student">
+        SELECT id,username,password FROM student WHERE id=#{id}
+    </select>
+
+
+    <!--用户登陆判断-->
+    <select id="login" parameterType="com.nenu.yf.entity.Student" resultMap="StudentResult">
+		select*FROM student WHERE username=#{username}
+	</select>
+
+
+</mapper>
