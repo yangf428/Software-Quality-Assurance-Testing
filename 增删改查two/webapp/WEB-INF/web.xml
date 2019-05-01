@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         id="WebApp_ID" version="2.5">
+    <display-name></display-name>
+
+    <!--&lt;!&ndash;检测用户是否登录的过滤器配置&ndash;&gt;-->
+    <!--&lt;!&ndash;用户信息存放到session中的键的名字&ndash;&gt;-->
+    <!--<context-param>-->
+    <!--<param-name>userSessionKey</param-name>-->
+    <!--<param-value>username</param-value>-->
+    <!--</context-param>-->
+    <!--&lt;!&ndash;若未登录，需要重定向的页面&ndash;&gt;-->
+    <!--<context-param>-->
+    <!--<param-name>redirectPage</param-name>-->
+    <!--<param-value>/index1.jsp</param-value>-->
+    <!--</context-param>-->
+    <!--&lt;!&ndash;不需要拦截的URL列表;注意配置时不要拦截后台对用户和密码判断的页面,否则可能登录登录不进主界面&ndash;&gt;-->
+    <!--<context-param>-->
+    <!--<param-name>uncheckedUrls</param-name>-->
+    <!--<param-value>/index1.jsp,/addstudent/</param-value>-->
+    <!--</context-param>-->
+
+
+    <!-- Spring字符集过滤器 -->
+    <filter>
+        <!--display-name没什么特殊意义。可以直接删除掉。是servlet的描述性说明文字-->
+        <!--<display-name>EncodingFilter</display-name>-->
+        <!--过滤器名称-->
+        <filter-name>filter</filter-name>
+        <!--过滤器类的包的路径-->
+        <filter-class>com.nenu.yf.filter.CharacterEncodingFilter</filter-class>
+        <!--可选-->
+        <!--<init-param>-->
+        <!--&lt;!&ndash;过滤器初始化参数&ndash;&gt;-->
+        <!--<param-name>encoding</param-name>-->
+        <!--<param-value>UTF-8</param-value>-->
+        <!--</init-param>-->
+    </filter>
+    <!--过滤器映射-->
+    <filter-mapping>
+        <filter-name>filter</filter-name>
+        <!--过滤器映射的对象-->
+        <url-pattern>/jsp/*</url-pattern>
+        <!--“/*”属于路径匹配，并且可以匹配所有request，由于路径匹配的优先级仅次于精确匹配，所以“/*”会覆盖所有的扩展名匹配，
+        很多404错误均由此引起，所以这是一种特别恶劣的匹配模式，一般只用于filter的url-pattern-->
+        <!--作用于某一种类型的文件：<url—pattern>*.扩展名</url-pattern>。比如<url—pattern>*.jsp</url-pattern>过滤所有对jsp文件的访问请求。-->
+    </filter-mapping>
+
+
+    <!--监听器-->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!-- 读取spring配置文件 -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext.xml
+        </param-value>
+    </context-param>
+
+
+    <!-- springMVC核心配置 -->
+    <servlet>
+        <servlet-name>springMVC</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:springmvc-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>springMVC</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.js</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.css</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.jpg</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.png</url-pattern>
+    </servlet-mapping>
+
+
+    <welcome-file-list>
+        <welcome-file>/WEB-INF/jsp/index.jsp</welcome-file>
+    </welcome-file-list>
+
+</web-app>
+
