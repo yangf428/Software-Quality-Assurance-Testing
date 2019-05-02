@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd     
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.1.xsd
+    http://www.springframework.org/schema/aop    
+    http://www.springframework.org/schema/aop/spring-aop-4.1.xsd">
+	
+	<!-- 指示Spring MVC扫描目标包中的类->扫描控制类 -->
+	<context:component-scan base-package="com.nenu.yf.controller"/>
+	<!-- 指示Spring MVC扫描目标包中的类->扫描服务类 -->
+	<context:component-scan base-package="com.nenu.yf.service"/>
+
+    <context:component-scan base-package="com.nenu.yf.filter"/>
+	<!-- 该元素做的事情包括注册用于支持基于注解的控制器的请求处理方法的bean对象 -->
+	<mvc:annotation-driven/>
+	
+	<!-- resources元素则指示Spring MVC哪些静态资源需要单独处理（不通过dispatcher servlet） 
+	这里的第一个确保在/CSS目录下的所有文件可见，第二个允许显示所有的.html文件-->
+	<!--静态资源访问-->
+	<mvc:resources location="../webapp/WEB-INF/js/" mapping="/js/**"/>
+	<mvc:resources location="../webapp/WEB-INF/css/" mapping="/css/**"/>
+	<mvc:resources location="../webapp/WEB-INF/imgs/" mapping="/images/**"/>
+	<!--<mvc:resources mapping="/css/**" location="/css/"/>-->
+	<!--<mvc:resources mapping="/*.html" location="/"/>-->
+	
+	<!-- pring MVC中的视图解析器负责解析视图。可以通过在配置文件中定义一个ViewResolver来配置视图
+	解析器。如下视图解析器配置有前缀和后缀两个属性。这样一来，view路径将缩短。例如，仅需提供“myPage”，而不必再设置
+	视图路径为/WEB-INF/jsp/myPage.jsp，视图解析器将会自动增加前缀和后缀。-->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	  <property name="prefix" value="/WEB-INF/jsp/"/>
+	  <property name="suffix" value=".jsp"/>
+	</bean>
+
+
+
+	 <!--定义文件解释器 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 默认编码 -->
+		<property name="defaultEncoding" value="utf-8"/>
+		<!-- 文件大小最大值 -->
+		<property name="maxUploadSize" value="10485760000"/>
+		<!-- 内存中的最大值 -->
+		<property name="maxInMemorySize" value="1024"/>
+		<!-- 文件上传暂存目录，文件上传完成之后会清除目录下的文件 -->
+	</bean>
+
+
+
+</beans>
+
+
+<!-- 要使用Spring MVC中自带的Dispatcher Servlet，需要把它配置在部署描述符(web.xml文件)，应用servlet和
+servlet-mapping元素。Dispatcher servlet将使用Spring MVC诸多默认的组件。此外，初始化时，它会寻找一个在应用程序的
+WEB-INF目录下的配置文件，该配置文件的命名规则如下：servletName-servlet.xml
+其中，servletName是在部署描述符中的Dispatcher servlet的名称。此外，也可以把Spring MVC的配置文件放在应用程序目录
+中的任何地方，用srevlet定义的init-param元素，以便Dispatcher servlet加载到该文件。init-param元素拥有一个值为
+contextConfigLocation的param-name元素，其param-value元素则包含配置文件的路径。-->
